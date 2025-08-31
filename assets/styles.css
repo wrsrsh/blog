@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
 :root {
   font-weight: 400;
-  font-family: "Helvetica Neue", sans-serif;
+  font-family: "Work Sans", sans-serif;
+  letter-spacing: -0.02em;
   font-size: 15px;
 }
 
@@ -10,6 +13,11 @@ body {
   padding: 40px;
   gap: 20px;
   justify-content: center;
+  /* background:
+    linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 1.5)),
+    url("/assets/paper.png");
+  background-size: cover;
+  background-position: center; */
 }
 
 h3 {
@@ -40,6 +48,7 @@ a:hover {
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 40px;
+  width: 38.5rem;
 }
 
 #navbar-list {
@@ -47,6 +56,7 @@ a:hover {
   margin: 0;
   display: flex;
   flex-direction: column;
+  align-items: end;
   gap: 7px;
 }
 
