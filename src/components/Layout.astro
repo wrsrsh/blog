@@ -1,0 +1,87 @@
+---
+import BaseHead from "./BaseHead.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { cn } from "@sglara/cn";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
+
+const currentPath = Astro.url.pathname;
+
+const linkClass = (path: string) =>
+  cn("underline-offset-4", path === "/" ? currentPath === path && "underline" : currentPath.startsWith(path) && "underline");
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} />
+  </head>
+  <body class="mx-auto max-w-[720px] px-5 py-10 min-h-screen flex flex-col">
+    <header class="flex flex-col gap-4">
+      <a class="no-underline hover:no-underline" href="/">
+        <h1 class="text-2xl mb-2 font-semibold">Waris Reshi</h1>
+      </a>
+      <div class="flex items-center justify-between">
+        <nav class="flex gap-4">
+          <a href="/" class={linkClass("/")}>About  </a>
+          <a href="/blog/" class={linkClass("/blog/")}>Blog</a>
+        </nav>
+        <nav>
+          <a
+            href="mailto:waris@asent.app"
+            class="no-underline hover:underline underline-offset-4 flex items-center gap-1.5"
+            title="Email">waris@asent.app</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <main class="flex-1">
+      <slot />
+    </main>
+
+    <footer
+      class="pt-8 pb-4 flex items-center justify-between"
+      style="color: var(--color-muted);"
+    >
+      <span>&copy; {new Date().getFullYear()} Waris Reshi</span>
+      <div class="flex items-center gap-5">
+        <a
+          href="/rss.xml"
+          target="_blank"
+          class="no-underline hover:underline flex items-center gap-1.5"
+          title="Subscribe via RSS"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-4 h-4"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path
+              d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1Z"
+            ></path>
+          </svg>
+          <span>RSS</span>
+        </a>
+        <a
+          href="https://github.com/wrsrsh"
+          target="_blank"
+          class="no-underline hover:underline flex items-center gap-1.5"
+          title="GitHub">Github</a
+        >
+        <a
+          href="https://www.linkedin.com/in/wrsrsh/"
+          target="_blank"
+          class="no-underline hover:underline flex items-center gap-1.5"
+          title="LinkedIn">LinkedIn</a
+        >
+      </div>
+    </footer>
+  </body>
+</html>

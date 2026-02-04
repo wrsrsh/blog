@@ -1,0 +1,258 @@
+---
+title: 'Using MDX'
+description: 'Lorem ipsum dolor sit amet'
+pubDate: 'Jun 01 2024'
+---
+
+This theme comes with the [@astrojs/mdx](https://docs.astro.build/en/guides/integrations-guide/mdx/) integration installed and configured in your `astro.config.mjs` config file. If you prefer not to use MDX, you can disable support by removing the integration from your config file.
+
+## Why MDX?
+
+MDX is a special flavor of Markdown that supports embedded JavaScript & JSX syntax. This unlocks the ability to [mix JavaScript and UI Components into your Markdown content](https://docs.astro.build/en/guides/integrations-guide/mdx/#mdx-in-astro) for things like interactive charts or alerts.
+
+If you have existing content authored in MDX, this integration will hopefully make migrating to Astro a breeze.
+
+## Example
+
+MDX allows you to use JSX components directly in your markdown files. This is useful for creating interactive elements or reusing components across your content.
+
+### Full Calculator in C
+```c
+#include <stdio.h>
+
+int add(int a, int b) {
+    return a + b;
+}
+
+int main() {
+    printf("Result: %d\n", add(1, 2));
+    return 0;
+}
+```
+
+### Full Calculator in Java
+```java
+import java.util.Scanner;
+
+public class Main {
+
+    // Add
+    public static int add(int a, int b) {
+        return a + b;
+    }
+
+    // Subtract
+    public static int subtract(int a, int b) {
+        return a - b;
+    }
+
+    // Multiply
+    public static int multiply(int a, int b) {
+        return a * b;
+    }
+
+    // Divide (returns double for accuracy)
+    public static double divide(int a, int b) {
+        if (b == 0) {
+            throw new ArithmeticException("Cannot divide by zero.");
+        }
+        return (double) a / b;
+    }
+
+    // Get two numbers from user
+    public static int[] getInput(Scanner scanner) {
+
+        System.out.print("Enter first number: ");
+        int number1 = scanner.nextInt();
+
+        System.out.print("Enter second number: ");
+        int number2 = scanner.nextInt();
+
+        return new int[]{number1, number2};
+    }
+
+    // Get operation choice
+    public static int getChoice(Scanner scanner) {
+
+        System.out.println("\nChoose an operation:");
+        System.out.println("1. Add");
+        System.out.println("2. Subtract");
+        System.out.println("3. Multiply");
+        System.out.println("4. Divide");
+
+        System.out.print("Enter your choice: ");
+        return scanner.nextInt();
+    }
+
+    // Calculator logic
+    public static void calculator() {
+
+        Scanner scanner = new Scanner(System.in);
+
+        try {
+            int[] numbers = getInput(scanner);
+            int choice = getChoice(scanner);
+
+            int a = numbers[0];
+            int b = numbers[1];
+
+            switch (choice) {
+
+                case 1:
+                    System.out.println("Result: " + add(a, b));
+                    break;
+
+                case 2:
+                    System.out.println("Result: " + subtract(a, b));
+                    break;
+
+                case 3:
+                    System.out.println("Result: " + multiply(a, b));
+                    break;
+
+                case 4:
+                    System.out.println("Result: " + divide(a, b));
+                    break;
+
+                default:
+                    System.out.println("Invalid choice.");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            scanner.close();
+        }
+    }
+
+    // Program entry point
+    public static void main(String[] args) {
+        calculator();
+    }
+}
+```
+
+### Full Calculator in Elixir
+```elixir
+defmodule Main do
+  def calculator do
+    number1 =
+      IO.gets("Enter a number:")
+      |> String.trim()
+      |> String.to_integer()
+
+    number2 =
+      IO.gets("Enter a number:")
+      |> String.trim()
+      |> String.to_integer()
+
+    IO.puts("These are the operations you can perform:")
+    IO.puts("1. Add")
+    IO.puts("2. Subtract")
+    IO.puts("3. Multiply")
+    IO.puts("4. Divide")
+
+    choice =
+      IO.gets("Enter your choice: ")
+      |> String.trim()
+      |> String.to_integer()
+
+    result = 0
+
+    case choice do
+      1 ->
+        result = number1 + number2
+
+      2 ->
+        result = number1 - number2
+
+      3 ->
+        result = number1 * number2
+
+      4 ->
+        result = number1 / number2
+
+      _ ->
+        IO.puts("Invalid choice")
+        nil
+    end
+
+    IO.puts("The result is: #{result}")
+  end
+end
+
+Main.calculator()
+```
+
+### Full Calculator in Rust
+```rust 
+use std::io::{self, Read};
+
+fn main() {
+    let mut s = String::new();
+    io::stdin().read_to_string(&mut s).unwrap();
+    let v: Vec<&str> = s.split_whitespace().collect();
+
+    if let [a, o, b] = v.as_slice() {
+        let (a, b): (f64, f64) = (a.parse().unwrap(), b.parse().unwrap());
+        let r = match *o { "+"=>a+b, "-"=>a-b, "*"=>a*b, "/" if b!=0.0=>a/b, _=>return };
+        println!("{:.2}", r);
+    }
+}
+```
+
+### Full Calculator in Go
+```go
+package main
+
+import (    
+	"bufio"
+	"fmt"
+	"os"
+)
+
+
+func main() {
+	reader := bufio.NewReader(os.Stdin)
+
+	var a, b float64
+	var op string
+
+	fmt.Print("Enter first number: ")
+	fmt.Fscan(reader, &a)
+
+	fmt.Print("Enter operator (+ - * /): ")
+	fmt.Fscan(reader, &op)
+
+	fmt.Print("Enter second number: ")
+	fmt.Fscan(reader, &b)
+
+	var result float64
+
+	switch op {
+	case "+":
+		result = a + b
+	case "-":
+		result = a - b
+	case "*":
+		result = a * b
+	case "/":
+		if b == 0 {
+			fmt.Println("Error: Division by zero. Physics and math both disapprove.")
+			return
+		}
+		result = a / b
+	default:
+		fmt.Println("Invalid operator.")
+		return
+	}
+
+	fmt.Printf("Result: %.2f\n", result)
+}
+```
+
+## More Links
+
+- [MDX Syntax Documentation](https://mdxjs.com/docs/what-is-mdx)
+- [Astro Usage Documentation](https://docs.astro.build/en/basics/astro-pages/#markdownmdx-pages)
+- **Note:** [Client Directives](https://docs.astro.build/en/reference/directives-reference/#client-directives) are still required to create interactive components. Otherwise, all components in your MDX will render as static HTML (no JavaScript) by default.
