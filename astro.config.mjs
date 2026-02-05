@@ -13,8 +13,10 @@ export default defineConfig({
   integrations: [mdx(), sitemap()],
 
   vite: {
-      plugins: [tailwindcss()],
-	},
+    plugins: [tailwindcss()],
+  },
 
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    platformProxy: { enabled: true, configPath: "wrangler.jsonc", persist: true, },
+  }),
 });
