@@ -22,7 +22,7 @@ const posts = (await getCollection("blog")).sort(
       I am a programmer and cofounder of <a href="https://asent.app" target="_blank">Asent</a>. I write about <code>Applied AI</code>, fun programming stuff and <code>Sales Tech</code>
     </p>
 
-    <h5>Recent blogs:</h5>
+    <h5 class="font-medium">Recent blogs:</h5>
     <ul class="list-disc! py-0 mt-1">
       {
         posts.map((post) => (
@@ -36,9 +36,9 @@ const posts = (await getCollection("blog")).sort(
   </section>
 
   <p
-    class="mt-8 pt-4 border-t border-dashed"
+    class="mt-8"
     style="border-color: var(--color-border);"
   >
-Thanks for visiting, <a href="/rss.xml">Subscribe</a> to my blog.
+Thanks for visiting, <a href="/rss.xml" class="pointer-events-none">Subscribe</a> to this blog.
   </p>
 </Layout>
