@@ -14,15 +14,44 @@
   --color-border: #e5e5e5;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #121212;
+    --color-text: #e0e0e0;
+    --color-heading: #c0c0c0;
+    --color-link: #6ea8fe;
+    --color-code-bg: #1e1e1e;
+    --color-code: #d4d4d4;
+    --color-muted: #999;
+    --color-border: #333;
+  }
+}
+
 @layer base {
   html {
     font-family: var(--font-sans);
-    font-size: 1.1em;
+    font-size: 1.03em;
     @apply leading-6;
+  }
+
+  @media (min-width: 640px) {
+    html {
+      font-size: 1.1em;
+    }
   }
 
   body {
     @apply antialiased bg-[var(--color-background)] text-[var(--color-text)];
+  }
+
+  html {
+    --shadow-bar-color: rgb(64, 64, 64);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html {
+      --shadow-bar-color: rgb(180, 180, 180);
+    }
   }
 
   h1,
@@ -64,7 +93,7 @@
   }
 
   blockquote {
-    @apply border-l-1 border-gray-300 pl-4 italic;
+    @apply border-l-1 border-[var(--color-border)] pl-4 italic;
   }
 
   /* Prose styles for blog posts */
@@ -102,7 +131,7 @@
   }
 
   .prose blockquote {
-    @apply my-6 border-l-2 border-gray-300 pl-4;
+    @apply my-6 border-l-2 border-[var(--color-border)] pl-4;
   }
 
   .prose img {
