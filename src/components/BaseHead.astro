@@ -1,16 +1,96 @@
 ---
 import '../styles/global.css';
-import { SITE_TITLE } from '../consts';
+import { SEO } from 'astro-seo';
+import { SITE_TITLE, TWITTER_HANDLE } from '../consts';
 
 interface Props {
   title: string;
   description: string;
   image?: string;
+  type?: 'website' | 'article';
+  pubDate?: Date;
+  updatedDate?: Date;
+  pageType?: 'home' | 'blog-post' | 'blog-list' | 'default';
 }
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+const siteURL = Astro.site?.href ?? 'https://waris.asent.app';
 
-const { title, description, image = '/favicon.svg' } = Astro.props;
+const {
+  title,
+  description,
+  image = '/favicon.svg',
+  type = 'website',
+  pubDate,
+  updatedDate,
+  pageType = 'default',
+} = Astro.props;
+
+const resolvedImage = new URL(image, Astro.url).href;
+
+// --- JSON-LD Structured Data ---
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE_TITLE,
+  url: siteURL,
+};
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Waris Reshi',
+  url: siteURL,
+  sameAs: [
+    'https://github.com/wrsrsh',
+    'https://www.linkedin.com/in/wrsrsh/',
+    `https://x.com/${TWITTER_HANDLE.replace('@', '')}`,
+  ],
+  jobTitle: 'Co-founder',
+  worksFor: {
+    '@type': 'Organization',
+    name: 'Asent',
+    url: 'https://asent.app',
+  },
+};
+
+const articleSchema = pubDate
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      url: canonicalURL,
+      datePublished: pubDate.toISOString(),
+      ...(updatedDate && { dateModified: updatedDate.toISOString() }),
+      author: {
+        '@type': 'Person',
+        name: 'Waris Reshi',
+        url: siteURL,
+      },
+      publisher: {
+        '@type': 'Person',
+        name: 'Waris Reshi',
+        url: siteURL,
+      },
+      ...(image !== '/favicon.svg' && {
+        image: resolvedImage,
+      }),
+    }
+  : null;
+
+function getJsonLdScripts() {
+  const schemas: object[] = [websiteSchema];
+  if (pageType === 'home') {
+    schemas.push(personSchema);
+  }
+  if (pageType === 'blog-post' && articleSchema) {
+    schemas.push(articleSchema);
+  }
+  return schemas;
+}
+
+const jsonLdSchemas = getJsonLdScripts();
 ---
 
 <!-- Global Metadata -->
@@ -25,28 +105,45 @@ const { title, description, image = '/favicon.svg' } = Astro.props;
   href={new URL('rss.xml', Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
-<meta name="robots" content="index, follow" />
+<meta name="keywords" content="waris reshi, asent, srinagar, technology, ai, human performance, entrepreneurship, waris abass, waris, waris abass reshi" />
 
-<!-- Canonical URL -->
-<link rel="canonical" href={canonicalURL} />
+<!-- SEO Meta Tags (via astro-seo) -->
+<SEO
+  title={title}
+  description={description}
+  canonical={canonicalURL}
+  openGraph={{
+    basic: {
+      title: title,
+      type: type,
+      image: resolvedImage,
+      url: canonicalURL,
+    },
+    optional: {
+      description: description,
+      siteName: SITE_TITLE,
+    },
+    ...(type === 'article' && pubDate
+      ? {
+          article: {
+            publishedTime: pubDate.toISOString(),
+            ...(updatedDate && { modifiedTime: updatedDate.toISOString() }),
+            authors: ['Waris Reshi'],
+          },
+        }
+      : {}),
+  }}
+  twitter={{
+    card: 'summary',
+    site: TWITTER_HANDLE,
+    creator: TWITTER_HANDLE,
+    title: title,
+    image: resolvedImage,
+    description: description,
+  }}
+/>
 
-<!-- Primary Meta Tags -->
-<title>{title}</title>
-<meta name="title" content={title} />
-<meta name="description" content={description} />
-<meta name="keywords" content="waris reshi, asent, srinagar, technology, ai, human performance, entrepreneurship" />
-
-<!-- Open Graph / Facebook -->
-<meta property="og:site_name" content={SITE_TITLE} />
-<meta property="og:type" content="website" />
-<meta property="og:url" content={Astro.url} />
-<meta property="og:title" content={title} />
-<meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image, Astro.url)} />
-
-<!-- Twitter -->
-<meta property="twitter:card" content="summary" />
-<meta property="twitter:url" content={Astro.url} />
-<meta property="twitter:title" content={title} />
-<meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={new URL(image, Astro.url)} />
+<!-- JSON-LD Structured Data -->
+{jsonLdSchemas.map((schema) => (
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+))}

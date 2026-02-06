@@ -6,9 +6,22 @@ import { cn } from "@sglara/cn";
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  pubDate?: Date;
+  updatedDate?: Date;
+  pageType?: 'home' | 'blog-post' | 'blog-list' | 'default';
 }
 
-const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
+const {
+  title = SITE_TITLE,
+  description = SITE_DESCRIPTION,
+  image,
+  type,
+  pubDate,
+  updatedDate,
+  pageType,
+} = Astro.props;
 
 const currentPath = Astro.url.pathname;
 
@@ -20,7 +33,7 @@ const linkClass = (path: string) =>
 <html lang="en"
   class="shadow-none sm:shadow-[inset_0_5px_0_0_var(--shadow-bar-color)]">
   <head>
-    <BaseHead title={title} description={description} />
+    <BaseHead title={title} description={description} image={image} type={type} pubDate={pubDate} updatedDate={updatedDate} pageType={pageType} />
   </head>
   <body class="mx-auto max-w-[720px] px-6 sm:px-5 pt-5 sm:pt-10 pb-0 sm:pb-10 min-h-screen flex flex-col relative">
     <header class="flex flex-col gap-4">

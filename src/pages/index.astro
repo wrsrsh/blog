@@ -10,7 +10,7 @@ const posts = (await getCollection("blog")).sort(
 ).slice(0, 4)
 ---
 
-<Layout>
+<Layout pageType="home">
   <section class="prose pt-10">
     <Image
       src={warisImage}
