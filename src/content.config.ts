@@ -11,7 +11,8 @@ const blog = defineCollection({
 			description: z.string().describe('The description of the blog post'),
 			pubDate: z.coerce.date().describe('The publication date of the blog post, input format is "mmm dd yyyy", example: "Feb 04 2026"'), // string to date
 			updatedDate: z.coerce.date().optional().describe('The updated date of the blog post, input format is "mmm dd yyyy", example: "Feb 04 2026"'), // string to date
-			heroImage: image().optional().describe('The hero image of the blog post'),
+      heroImage: image().optional().describe('The hero image of the blog post'),
+			published: z.boolean().optional().describe('Whether the blog post is published'),
 		}),
 });
 
