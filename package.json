@@ -17,6 +17,7 @@
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.17.1",
     "astro-seo": "^1.1.0",
+    "katex": "^0.16.28",
     "sharp": "^0.34.3",
     "tailwindcss": "^4.1.18"
   }

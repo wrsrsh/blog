@@ -1,0 +1,10 @@
+---
+import katex from 'katex';
+
+const { formula = '', class: className, inline = false } = Astro.props;
+const html = katex.renderToString(formula, {throwOnError: false, displayMode: !inline});
+---
+
+<div class={className} style={inline ? 'display: inline-block; vertical-align: middle;' : ''}>
+	<span set:html={html} />
+</div>

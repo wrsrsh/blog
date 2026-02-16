@@ -16,9 +16,9 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-background: #121212;
-    --color-text: #e0e0e0;
-    --color-heading: #c0c0c0;
+    --color-background: #212121;
+    --color-text: #fff;
+    --color-heading: #fff;
     --color-link: #6ea8fe;
     --color-code-bg: #1e1e1e;
     --color-code: #d4d4d4;
@@ -98,7 +98,7 @@
 
   /* Prose styles for blog posts */
   .prose {
-    @apply leading-7;
+    @apply leading-5.5;
   }
 
   .prose p {
@@ -119,11 +119,11 @@
   }
 
   .prose li {
-    @apply mb-2;
+    @apply mb-2 list-disc;
   }
 
   .prose pre {
-    @apply bg-[var(--color-code-bg)] p-4.5 rounded-xl overflow-x-auto m-0;
+    @apply bg-[var(--color-code-bg)] p-4.5 rounded-xl overflow-x-auto mb-10;
   }
 
   .prose pre code {

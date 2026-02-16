@@ -31,34 +31,28 @@ const linkClass = (path: string) =>
 
 <!doctype html>
 <html lang="en"
-  class="shadow-none sm:shadow-[inset_0_5px_0_0_var(--shadow-bar-color)]">
+  class="shadow-none ">
   <head>
     <BaseHead title={title} description={description} image={image} type={type} pubDate={pubDate} updatedDate={updatedDate} pageType={pageType} />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.css"
+      integrity="sha384-WsHMgfkABRyG494OmuiNmkAOk8nhO1qE+Y6wns6v+EoNoTNxrWxYpl5ZYWFOLPCM"
+      crossorigin="anonymous"
+    />
   </head>
   <body class="mx-auto max-w-[720px] px-6 sm:px-5 pt-5 sm:pt-10 pb-0 sm:pb-10 min-h-screen flex flex-col relative">
-    <header class="flex flex-col gap-4">
-      <div class="flex items-center justify-between">
+
+    <header class="flex items-center justify-between">
         <a class="no-underline hover:no-underline" href="/">
-          <h1 class="text-2xl mb-0 sm:mb-2 font-semibold">Waris Reshi</h1>
+            <h1 class="mb-0">Waris Reshi</h1>
         </a>
-        <nav class="flex gap-4 sm:hidden">
-          <a href="/" class={linkClass("/")}>About</a>
-          <a href="/blog/" class={linkClass("/blog/")}>Blog</a>
-        </nav>
-      </div>
-      <div class="hidden sm:flex items-center justify-between">
-        <nav class="flex gap-4">
-          <a href="/" class={linkClass("/")}>About</a>
-          <a href="/blog/" class={linkClass("/blog/")}>Blog</a>
-        </nav>
+
         <nav>
-          <a
-            href="mailto:waris@asent.app"
-            class="no-underline hover:underline underline-offset-4 flex items-center gap-1.5"
-            title="Email">waris@asent.app</a
-          >
+            <a href="/archive/" class={linkClass("/archive/")}>
+            Archive
+            </a>
         </nav>
-      </div>
     </header>
 
     <main class="flex-1">
@@ -69,7 +63,7 @@ const linkClass = (path: string) =>
       class="pt-8 pb-4 flex items-center justify-between text-xs sm:text-sm"
       style="color: var(--color-muted);"
     >
-      <span class="whitespace-nowrap">&copy; {new Date().getFullYear()} Waris Reshi</span>
+      <span class="whitespace-nowrap lowercaswe">&copy; {new Date().getFullYear()} WAR</span>
         <div class="flex items-center gap-3 sm:gap-5">
           <a
             href="/rss.xml"

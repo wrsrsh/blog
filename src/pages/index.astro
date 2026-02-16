@@ -7,7 +7,7 @@ import FormattedDate from "../components/FormattedDate.astro";
 
 const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-).slice(0, 4)
+).slice(0, 5)
 ---
 
 <Layout pageType="home">
@@ -15,30 +15,23 @@ const posts = (await getCollection("blog")).sort(
     <Image
       src={warisImage}
       alt="Waris Reshi"
-      class="size-46 object-cover"
+      class="size-38 lg:size-46 object-cover transition-transform duration-300 ease-in-out"
       priority={true}
     />
-    <p>
-      I am a programmer and cofounder of <a href="https://asent.app" target="_blank">Asent</a>. I write about <code>Applied AI</code>, fun programming stuff and <code>Sales Tech</code>
-    </p>
-
-    <h5 class="font-medium">Recent blogs:</h5>
-    <ul class="list-disc! py-0 mt-1">
+    <p>Hey I am Waris, You might be here if you are interested in <a href='https://asent.app' target="_blank">Asent</a> or some of my blogs:</p>
+    <ul class="list-disc! py-0 -mt-2">
       {
         posts.map((post) => (
           <li>
-        <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+        <a href={`/post/${post.id}/`}>{post.data.title}</a>
 
           </li>
         ))
       }
     </ul>
-  </section>
 
-  <p
-    class="mt-8"
-    style="border-color: var(--color-border);"
-  >
-Thanks for visiting, <a href="/rss.xml" class="pointer-events-none">Subscribe</a> to this blog.
-  </p>
+    <p class="pt-8">
+        For the full blog list, check the archive page. For any other questions/feedback, feel free to reach out to me on <a href="https://twitter.com/wrsrsh" target="_blank">X</a> or <a href="mailto:hello@reshi.me">email</a>.
+    </p>
+  </section>
 </Layout>
