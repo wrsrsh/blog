@@ -1,9 +1,8 @@
 ---
-import Layout from "../components/Layout.astro";
 import { Image } from "astro:assets";
-import warisImage from "../assets/waris_profile.png";
 import { getCollection } from "astro:content";
-import FormattedDate from "../components/FormattedDate.astro";
+import warisImage from "../assets/waris_profile.png";
+import Layout from "../components/Layout.astro";
 
 const posts = (await getCollection("blog")).filter(
   (post) => post.data.published === true
