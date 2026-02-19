@@ -11,14 +11,14 @@ const posts = (await getCollection("blog")).filter(
 ---
 
 <Layout pageType="home">
-  <section class="prose pt-10">
+  <section class="prose pt-10" transition:name="home-content">
     <p>Hey I am Waris, You might be here to check out <a href='https://asent.app' target="_blank">Asent</a> or some of my recent blogs:</p>
     <ul class="list-none! py-0 -mt-2 pl-0!">
       {
         posts.map((post, i) => (
-          <li class="flex items-center">
+          <li class="flex items-center motion-reveal" data-reveal style={`--reveal-delay: ${70 + i * 20}ms;`}>
             <kbd class="text-[10px] mr-2 font-mono select-none not-prose" style="color: var(--color-muted);">[{i + 1}]</kbd>
-            <a href={`/post/${post.id}/`}>{post.data.title}</a>
+            <a href={`/post/${post.id}/`} class="motion-lift">{post.data.title}</a>
           </li>
         ))
       }

@@ -10,9 +10,9 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 ---
 
 <Layout title={title} description={description} image={heroImage?.src} type="article" pubDate={pubDate} updatedDate={updatedDate} pageType="blog-post">
-  <article>
+  <article transition:name="post-content">
 
-    <header class="pt-14">
+    <header class="pt-14 motion-reveal" data-reveal style="--reveal-delay: 60ms;">
       <h1 class="text-xl font-semibold mb-2">{title}</h1>
 
       <p style="color: var(--color-muted);">
@@ -28,7 +28,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     </header>
 
 
-    <div class="hero-image py-4">
+    <div class="hero-image py-4 motion-reveal" data-reveal style="--reveal-delay: 100ms;">
       {
         heroImage && (
           <Image
@@ -40,15 +40,16 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
         )
       }
     </div>
-    <div class="prose">
+    <div class="prose motion-reveal" data-reveal style="--reveal-delay: 130ms;">
       <slot />
     </div>
 
     <p
-      class="mt-10 pt-4 border-t border-dashed"
+      class="mt-10 pt-4 border-t border-dashed motion-reveal"
+      data-reveal
       style="border-color: var(--color-border);"
     >
-      <a href="/">&larr; Back to home</a><sup><kbd class="text-[10px] font-mono select-none" style="color: var(--color-muted);">[w]</kbd></sup>
+      <a href="/" class="motion-lift">&larr; Back to home</a><sup><kbd class="text-[10px] font-mono select-none" style="color: var(--color-muted);">[w]</kbd></sup>
     </p>
   </article>
 </Layout>

@@ -16,14 +16,14 @@ const posts = (await getCollection("blog")).filter(
   description="Essays and thoughts on AI, technology, and life."
   pageType="blog-list"
 >
-  <section class="pt-14">
+  <section class="pt-14" transition:name="archive-content">
     <ul class="list-none p-0 m-0">
       {
         posts.map((post, i) => (
-          <li class="flex mb-2 justify-between">
+          <li class="flex mb-2 justify-between motion-reveal" data-reveal style={`--reveal-delay: ${60 + i * 14}ms;`}>
             <span class="flex items-center">
               {i < 9 && <sup><kbd class="text-[10px] mr-1 font-mono select-none" style="color: var(--color-muted);">[{i + 1}]</kbd></sup>}
-              <a href={`/post/${post.id}/`}>{post.data.title}</a>
+              <a href={`/post/${post.id}/`} class="motion-lift">{post.data.title}</a>
             </span>
             <span style="color: var(--color-muted);" class="whitespace-nowrap">
               <FormattedDate date={post.data.pubDate} />
