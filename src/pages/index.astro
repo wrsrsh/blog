@@ -1,7 +1,6 @@
 ---
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
-import warisImage from "../assets/waris_profile.png";
 import Layout from "../components/Layout.astro";
 
 const posts = (await getCollection("blog")).filter(
@@ -13,13 +12,7 @@ const posts = (await getCollection("blog")).filter(
 
 <Layout pageType="home">
   <section class="prose pt-10">
-    <Image
-      src={warisImage}
-      alt="Waris Reshi"
-      class="size-38 lg:size-46 object-cover transition-transform duration-300 ease-in-out"
-      priority={true}
-    />
-    <p>Hey I am Waris, You might be here if you are interested in <a href='https://asent.app' target="_blank">Asent</a> or some of my blogs:</p>
+    <p>Hey I am Waris, You might be here to check out <a href='https://asent.app' target="_blank">Asent</a> or some of my recent blogs:</p>
     <ul class="list-disc! py-0 -mt-2">
       {
         posts.map((post) => (
