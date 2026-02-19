@@ -1,5 +1,3 @@
-## blog
-
 This is my blog at [reshi.me](https://reshi.me) built with [Astro](https://astro.build) and hosted on [cloudflare workers](https://workers.cloudflare.com/)
 
 ---
