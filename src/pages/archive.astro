@@ -19,9 +19,12 @@ const posts = (await getCollection("blog")).filter(
   <section class="pt-14">
     <ul class="list-none p-0 m-0">
       {
-        posts.map((post) => (
+        posts.map((post, i) => (
           <li class="flex mb-2 justify-between">
-            <a href={`/post/${post.id}/`}>{post.data.title}</a>
+            <span class="flex items-center">
+              {i < 9 && <sup><kbd class="text-[10px] mr-1 font-mono select-none" style="color: var(--color-muted);">[{i + 1}]</kbd></sup>}
+              <a href={`/post/${post.id}/`}>{post.data.title}</a>
+            </span>
             <span style="color: var(--color-muted);" class="whitespace-nowrap">
               <FormattedDate date={post.data.pubDate} />
             </span>
@@ -36,4 +39,23 @@ const posts = (await getCollection("blog")).filter(
       )
     }
   </section>
+
+  <script>
+    document.addEventListener("keydown", (e) => {
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement ||
+        (e.target as HTMLElement).isContentEditable
+      ) return;
+
+      const num = parseInt(e.key);
+      if (num >= 1 && num <= 9) {
+        const links = document.querySelectorAll<HTMLAnchorElement>("section ul li a");
+        const link = links[num - 1];
+        if (link) {
+          window.location.href = link.href;
+        }
+      }
+    });
+  </script>
 </Layout>

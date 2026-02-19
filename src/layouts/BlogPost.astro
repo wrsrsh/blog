@@ -48,7 +48,55 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
       class="mt-10 pt-4 border-t border-dashed"
       style="border-color: var(--color-border);"
     >
-      <a href="/">&larr; Back to home</a>
+      <a href="/">&larr; Back to home</a><sup><kbd class="text-[10px] font-mono select-none" style="color: var(--color-muted);">[w]</kbd></sup>
     </p>
   </article>
 </Layout>
+
+<script>
+  let lastKey = "";
+  document.addEventListener("keydown", (e) => {
+    if (
+      e.target instanceof HTMLInputElement ||
+      e.target instanceof HTMLTextAreaElement ||
+      (e.target as HTMLElement).isContentEditable
+    ) return;
+
+    const step = 60;
+    const jump = window.innerHeight * 0.5;
+
+    if (e.key === "g" && !e.shiftKey) {
+      if (lastKey === "g") {
+        window.scrollTo(0, 0);
+        lastKey = "";
+        return;
+      }
+      lastKey = "g";
+      setTimeout(() => { lastKey = ""; }, 500);
+      return;
+    }
+
+    if (e.key === "G") {
+      window.scrollTo(0, document.body.scrollHeight);
+      lastKey = "";
+      return;
+    }
+
+    lastKey = "";
+
+    switch (e.key) {
+      case "j":
+        window.scrollBy(0, step);
+        break;
+      case "k":
+        window.scrollBy(0, -step);
+        break;
+      case "}":
+        window.scrollBy(0, jump);
+        break;
+      case "{":
+        window.scrollBy(0, -jump);
+        break;
+    }
+  });
+</script>

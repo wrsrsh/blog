@@ -44,13 +44,14 @@ const linkClass = (path: string) =>
   <body class="mx-auto max-w-[720px] px-6 sm:px-5 pt-5 sm:pt-10 pb-0 sm:pb-10 min-h-screen flex flex-col relative">
 
     <header class="flex items-center justify-between">
-        <a class="no-underline hover:no-underline" href="/">
-            <h1 class="mb-0 font-[550]">Waris Reshi</h1>
+        <a class="no-underline hover:no-underline flex items-center" href="/">
+            <h1 class="mb-0 font-[550]">Waris Reshi</h1><sup><kbd class="text-[10px] font-mono select-none" style="color: var(--color-muted);">[w]</kbd></sup>
         </a>
 
-        <nav>
-            <a href="/archive/" class={linkClass("/archive/")}>
+        <nav class="flex items-center">
+            <a href="/archive/" class={`${linkClass("/archive/")} flex items-center`}>
             Archive
+            <sup><kbd class="text-[10px] font-mono select-none" style="color: var(--color-muted);">[a]</kbd></sup>
             </a>
         </nav>
     </header>
@@ -97,5 +98,21 @@ const linkClass = (path: string) =>
           >
         </div>
     </footer>
+    <script>
+      document.addEventListener("keydown", (e) => {
+        if (
+          e.target instanceof HTMLInputElement ||
+          e.target instanceof HTMLTextAreaElement ||
+          (e.target as HTMLElement).isContentEditable
+        ) return;
+
+        if (e.key === "a") {
+          window.location.href = "/archive/";
+        }
+        if (e.key === "w") {
+          window.location.href = "/";
+        }
+      });
+    </script>
   </body>
 </html>

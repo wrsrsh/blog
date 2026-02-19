@@ -4,4 +4,106 @@ description: "Design notes on implementing a node-based intelligence system."
 pubDate: "2026-02-16"
 published: true
 ---
-hey my name is waris
+Most LLM applications today follow a linear chain: prompt in, response out. But what if we structured intelligence as a graph — where each node represents a discrete cognitive operation, and edges define how information flows between them?
+
+## The Problem with Linear Chains
+
+Sequential prompt chains break down when tasks require branching logic, parallel processing, or iterative refinement. Consider a research assistant that needs to:
+
+1. Parse a user query into sub-questions
+2. Route each sub-question to a specialized retrieval node
+3. Synthesize results, detecting contradictions
+4. Loop back if confidence is below a threshold
+
+A linear chain can't express this naturally. A graph can.
+
+## Core Abstractions
+
+The system is built on three primitives:
+
+**Nodes** represent atomic operations — an LLM call, a retrieval step, a transformation function, or a human-in-the-loop checkpoint. Each node declares its input schema and output schema.
+
+```typescript
+interface Node {
+  id: string;
+  type: "llm" | "retrieval" | "transform" | "gate";
+  input: Schema;
+  output: Schema;
+  execute: (ctx: Context) => Promise<Result>;
+}
+```
+
+**Edges** define data flow between nodes. An edge can be unconditional (always fire) or conditional (fire based on the output of the source node).
+
+```typescript
+interface Edge {
+  from: string;
+  to: string;
+  condition?: (output: Result) => boolean;
+  transform?: (output: Result) => any;
+}
+```
+
+**The Executor** traverses the graph topologically, respecting dependencies and parallelizing independent branches. It maintains a shared context that accumulates results as nodes complete.
+
+## Routing and Conditional Logic
+
+Gate nodes are where things get interesting. A gate inspects incoming data and activates different downstream paths:
+
+```typescript
+const confidenceGate: Node = {
+  id: "confidence-check",
+  type: "gate",
+  execute: async (ctx) => {
+    const score = ctx.get("synthesis.confidence");
+    return { route: score > 0.8 ? "output" : "refine" };
+  },
+};
+```
+
+This lets you build retry loops, fallback chains, and ensemble patterns without special-casing them in application code.
+
+## Parallel Execution
+
+When the executor encounters nodes with no mutual dependencies, it runs them concurrently. For a research query decomposed into three sub-questions, all three retrieval nodes fire simultaneously — reducing latency from `3x` to `1x` the single-node cost.
+
+The executor tracks a dependency count for each node and decrements it as upstream nodes complete. When a node's count hits zero, it's ready to run.
+
+## State and Context
+
+Each execution maintains a context object — essentially a typed key-value store scoped to the run. Nodes read from and write to this context, which provides a clean interface for sharing intermediate results without tight coupling.
+
+```typescript
+class Context {
+  private store: Map<string, any> = new Map();
+
+  set(key: string, value: any): void {
+    this.store.set(key, value);
+  }
+
+  get<T>(key: string): T {
+    return this.store.get(key) as T;
+  }
+}
+```
+
+## Error Handling
+
+Graphs make error handling more explicit. Each node can define a fallback edge that activates on failure. The executor catches errors, logs them to the context, and follows the fallback path instead of crashing the entire run.
+
+This is especially useful for LLM calls, which can fail due to rate limits, context length issues, or simply producing unusable output.
+
+## Observations So Far
+
+After building a few workflows with this pattern:
+
+- **Debugging is easier.** You can inspect the context at any node boundary and replay individual nodes in isolation.
+- **Composition scales.** Sub-graphs can be packaged as single nodes in larger graphs, enabling hierarchical design.
+- **The overhead is minimal.** The graph structure adds negligible latency compared to the LLM calls themselves.
+- **Schema validation catches issues early.** Mismatched node interfaces surface at graph construction time, not at runtime.
+
+## What's Next
+
+The current implementation handles the execution side well, but there's more to explore: visual graph editors for non-technical users, automatic optimization of node placement, and persistent graphs that evolve as they process more data.
+
+The core insight is simple: treating LLM operations as nodes in a graph gives you the same benefits that dataflow programming gives to traditional computation — parallelism, composability, and clarity.

@@ -13,12 +13,12 @@ const posts = (await getCollection("blog")).filter(
 <Layout pageType="home">
   <section class="prose pt-10">
     <p>Hey I am Waris, You might be here to check out <a href='https://asent.app' target="_blank">Asent</a> or some of my recent blogs:</p>
-    <ul class="list-disc! py-0 -mt-2">
+    <ul class="list-none! py-0 -mt-2 pl-0!">
       {
-        posts.map((post) => (
-          <li>
-        <a href={`/post/${post.id}/`}>{post.data.title}</a>
-
+        posts.map((post, i) => (
+          <li class="flex items-center">
+            <kbd class="text-[10px] mr-2 font-mono select-none not-prose" style="color: var(--color-muted);">[{i + 1}]</kbd>
+            <a href={`/post/${post.id}/`}>{post.data.title}</a>
           </li>
         ))
       }
@@ -28,4 +28,23 @@ const posts = (await getCollection("blog")).filter(
         For the full blog list, check the archive page. For any other questions/feedback, feel free to reach out to me on <a href="https://twitter.com/wrsrsh" target="_blank">X</a> or <a href="mailto:hello@reshi.me">email</a>.
     </p>
   </section>
+
+  <script>
+    document.addEventListener("keydown", (e) => {
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement ||
+        (e.target as HTMLElement).isContentEditable
+      ) return;
+
+      const num = parseInt(e.key);
+      if (num >= 1 && num <= 9) {
+        const links = document.querySelectorAll<HTMLAnchorElement>("section ul li a");
+        const link = links[num - 1];
+        if (link) {
+          window.location.href = link.href;
+        }
+      }
+    });
+  </script>
 </Layout>
