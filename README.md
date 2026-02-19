@@ -1,4 +1,4 @@
-This is my blog at built with [Astro](https://astro.build) and hosted as a [worker](https://workers.cloudflare.com/)
+This is my blog built with [Astro](https://astro.build) and hosted as a [worker](https://workers.cloudflare.com/)
 
 ---
 
